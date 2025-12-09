@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para ti ❤️</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Indie+Flower&family=Quicksand:wght@500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div id="card">
+        
+        <div class="slide active" id="slide1">
+            <h1 class="floating">¡Hola Princesa! 👑</h1>
+            <p>He preparado una pequeña aventura para ti...</p>
+            <div class="sticker">🦄</div>
+            <button onclick="nextSlide(2)">Comenzar ✨</button>
+        </div>
+
+        <div class="slide" id="slide2">
+            <h1>Mundo Mágico ☁️</h1>
+            <p>Tú llenas mi cielo de colores...</p>
+            <button onclick="nextSlide(3)">Siguiente 🌈</button>
+        </div>
+
+        <div class="slide" id="slide3">
+            <h2>Mensaje entrante... 🌙</h2>
+            <div class="chat-container">
+                <div class="msg bubble-left hidden" id="msg1">Hola guapa 👋</div>
+                <div class="msg bubble-left hidden" id="msg2">¿Sabes una cosa?</div>
+                <div class="msg bubble-left hidden" id="msg3">Me encantas demasiado 🥰</div>
+            </div>
+            <button id="btn-chat" onclick="nextSlide(4)" style="display:none; margin-top:20px;">Continuar 💫</button>
+        </div>
+
+        <div class="slide" id="slide4">
+            <h2>Un recuerdo favorito</h2>
+            <p class="small-text">Toca la carta para girarla 👇</p>
+            
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <span style="font-size:3rem">❓</span>
+                    </div>
+                    <div class="flip-card-back">
+                        <img src="miamor.jpg" alt="Nosotros" onerror="this.src='https://via.placeholder.com/200/ffb7c5/ffffff?text=Falta+Foto'">
+                    </div>
+                </div>
+            </div>
+            <br>
+            <button onclick="nextSlide(5)">Siguiente 📸</button>
+        </div>
+
+        <div class="slide" id="slide5">
+            <h2>Analizando Amor... 🤖</h2>
+            <div class="loading-bar-container">
+                <div class="loading-bar" id="love-bar">0%</div>
+            </div>
+            <h3 id="result-text" class="hidden-fade">¡ERROR! ¡Es infinito! 💥</h3>
+            <button onclick="nextSlide(6)" id="btn-final" style="display:none;">Ver Final</button>
+        </div>
+
+        <div class="slide" id="slide6">
+            <h1>Te Amo ❤️</h1>
+            <p id="typewriter-text"></p> <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3ZneXp6Z3ZneXp6/26FLdmIp6wJr91J4Y/giphy.gif" class="final-gif">
+            
+            <div style="margin-top:20px;">
+                <button onclick="location.reload()">Ver de nuevo 🔄</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
