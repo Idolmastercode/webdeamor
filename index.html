@@ -5,8 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Para Ti ❤️</title>
     <style>
-        /* --- Reset & Base --- */
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        /* --- Reset & Base "ANTI-AZUL" --- */
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+            /* ESTO QUITA EL DESTELLO AZUL AL TOCAR */
+            -webkit-tap-highlight-color: transparent; 
+            -webkit-touch-callout: none;
+            outline: none; /* Quita bordes de selección en PC */
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow: hidden; /* Evita scroll */
@@ -14,9 +23,14 @@
             color: white;
             height: 100dvh; /* Altura dinámica para móviles */
             width: 100vw;
-            user-select: none; /* Evita selección de texto */
+            
+            /* Evita que se pueda seleccionar texto o imagen */
+            user-select: none; 
             -webkit-user-select: none;
-            touch-action: none; /* Mejora respuesta táctil */
+            -moz-user-select: none;
+            -ms-user-select: none;
+            
+            touch-action: none; /* Mejora respuesta táctil y evita gestos del navegador */
         }
 
         /* --- Pantalla de Intro --- */
@@ -162,7 +176,7 @@
 
         <div id="final-msg">
             <h2>¡TE EXTRAÑO! ❤️</h2>
-            <p>Perdón por quererte.</p>
+            <p>Perdón por quererte tanto.</p>
         </div>
     </div>
 
@@ -175,13 +189,14 @@
             { title: "Una promesa", text: "Te esperaré. Así sean meses, años o toda la vida. No tengo prisa si el destino eres tú.", bg: "linear-gradient(to bottom, #ff7e5f, #feb47b)" },
             { title: "Quiero sanar contigo", text: "Estar a tu lado es lo único que quiero. Me encantas tal y como eres.", bg: "linear-gradient(to bottom, #ff9a9e, #fecfef)" },
 
+            // 2. Apodos y Elogios
             { title: "Eres mi niña", text: "Mi pedacito de cielo.", bg: "linear-gradient(to bottom, #a18cd1, #fbc2eb)" },
             { title: "Mi ovejita rosa 🐑", text: "La más tierna de todas.", bg: "linear-gradient(to bottom, #fad0c4, #ffd1ff)" },
             { title: "Mi chaparrita", text: "La medida perfecta para abrazarte.", bg: "linear-gradient(to bottom, #fbc2eb, #a6c1ee)" },
             { title: "Mi güerita", text: "Brillas como el sol.", bg: "linear-gradient(to bottom, #f6d365, #fda085)" },
             { title: "Mi colombianita", text: "Me encantas toda tú.", bg: "linear-gradient(to bottom, #FDC830, #F37335)" },
             { title: "Mi menorsita", text: "A quien quiero cuidar siempre.", bg: "linear-gradient(to bottom, #84fab0, #8fd3f4)" },
-            { title: "Mi niña fresita ", text: "Dulce y única.", bg: "linear-gradient(to bottom, #ff9a9e, #fecfef)" },
+            { title: "Mi niña fresita", text: "Dulce y única.", bg: "linear-gradient(to bottom, #ff9a9e, #fecfef)" },
             
             { title: "Mi enojonsita", text: "Pero hasta enojada me gustas.", bg: "linear-gradient(to bottom, #cb2d3e, #ef473a)" },
             { title: "Mi dormilonita", text: "Me encanta cuando descansas.", bg: "linear-gradient(to bottom, #000428, #004e92)" },
