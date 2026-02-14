@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Para Ti ❤️</title>
+    <style>
+        /* --- Reset & Base --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden; /* Evita scroll */
+            background-color: #000;
+            color: white;
+            height: 100dvh; /* Altura dinámica para móviles */
+            width: 100vw;
+            user-select: none; /* Evita selección de texto */
+            -webkit-user-select: none;
+            touch-action: none; /* Mejora respuesta táctil */
+        }
+
+        /* --- Pantalla de Intro --- */
+        #intro-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            transition: opacity 1s ease;
+        }
+
+        .heart-btn {
+            background: none;
+            border: 2px solid #ff4d6d;
+            color: #ff4d6d;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            animation: pulse 1.5s infinite;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* --- Pantalla Principal --- */
+        #main-content {
+            opacity: 0;
+            transition: opacity 2s ease, background 0.8s ease; /* Transición rápida para los apodos */
+            height: 100%;
+            width: 100%;
+            position: relative;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+        }
+
+        /* --- Lluvia de Corazones --- */
+        .rain-container {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            overflow: hidden;
+            z-index: 1;
+            pointer-events: none;
+        }
+        .falling-heart {
+            position: absolute;
+            top: -10%;
+            color: #ff4d6d;
+            opacity: 0.8;
+            font-size: 1.5rem;
+            animation: fall linear forwards;
+        }
+
+        /* --- Cartas (Stack) --- */
+        #card-container {
+            position: relative;
+            width: 85%;
+            max-width: 400px;
+            height: 60%;
+            max-height: 500px;
+            z-index: 10;
+            perspective: 1000px;
+            pointer-events: auto;
+            transition: opacity 1s ease;
+        }
+
+        .card {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #333;
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s;
+            cursor: pointer;
+            border: 1px solid #ffccd5;
+        }
+
+        .card h2 { color: #d62828; margin-bottom: 15px; font-size: 1.8rem; }
+        .card p { font-size: 1.1rem; line-height: 1.6; color: #555; }
+        .card .hint {
+            margin-top: 20px; font-size: 0.8rem; color: #999; font-style: italic;
+        }
+
+        /* --- Texto Final --- */
+        #final-msg {
+            position: absolute;
+            z-index: 5;
+            text-align: center;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: opacity 2s ease, transform 2s ease;
+            width: 90%;
+            pointer-events: none; 
+        }
+        #final-msg h2 { font-size: 2.5rem; margin-bottom: 15px; text-shadow: 0 0 15px rgba(0,0,0,0.5); }
+        #final-msg p { font-size: 1.3rem; font-weight: 300; }
+        
+        /* Animaciones */
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 77, 109, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(255, 77, 109, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 77, 109, 0); }
+        }
+
+        @keyframes fall {
+            to { transform: translateY(110vh) rotate(360deg); }
+        }
+
+        .fly-away {
+            transform: translate(100vw, -20vh) rotate(30deg) !important;
+            opacity: 0 !important;
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bg-music" loop>
+        <source src="cancion.mp3" type="audio/mpeg">
+        Tu navegador no soporta audio.
+    </audio>
+
+    <div id="intro-screen">
+        <button class="heart-btn" onclick="startExperience()">Tócame ❤️</button>
+    </div>
+
+    <div id="main-content">
+        <div class="rain-container" id="rain"></div>
+
+        <div id="card-container"></div>
+
+        <div id="final-msg">
+            <h2>¡TE EXTRAÑO! ❤️</h2>
+            <p>Perdón por quererte.</p>
+        </div>
+    </div>
+
+    <script>
+        // --- CONFIGURACIÓN DE MENSAJES Y FONDOS ---
+        const MESSAGES = [
+            // 1. Introducción sentimental
+            { title: "Hola, bonita ❤️", text: "Sé que no es el mejor momento, pero te entiendo y quiero que estés tranquila.", bg: "linear-gradient(to bottom, #000000, #434343)" },
+            { title: "Pensando en ti", text: "Aunque no hablemos mucho ahora, no dejo de pensar en ti", bg: "linear-gradient(to bottom, #141E30, #243B55)" },
+            { title: "Una promesa", text: "Te esperaré. Así sean meses, años o toda la vida. No tengo prisa si el destino eres tú.", bg: "linear-gradient(to bottom, #ff7e5f, #feb47b)" },
+            { title: "Quiero sanar contigo", text: "Estar a tu lado es lo único que quiero. Me encantas tal y como eres.", bg: "linear-gradient(to bottom, #ff9a9e, #fecfef)" },
+
+            { title: "Eres mi niña", text: "Mi pedacito de cielo.", bg: "linear-gradient(to bottom, #a18cd1, #fbc2eb)" },
+            { title: "Mi ovejita rosa 🐑", text: "La más tierna de todas.", bg: "linear-gradient(to bottom, #fad0c4, #ffd1ff)" },
+            { title: "Mi chaparrita", text: "La medida perfecta para abrazarte.", bg: "linear-gradient(to bottom, #fbc2eb, #a6c1ee)" },
+            { title: "Mi güerita", text: "Brillas como el sol.", bg: "linear-gradient(to bottom, #f6d365, #fda085)" },
+            { title: "Mi colombianita", text: "Me encantas toda tú.", bg: "linear-gradient(to bottom, #FDC830, #F37335)" },
+            { title: "Mi menorsita", text: "A quien quiero cuidar siempre.", bg: "linear-gradient(to bottom, #84fab0, #8fd3f4)" },
+            { title: "Mi niña fresita ", text: "Dulce y única.", bg: "linear-gradient(to bottom, #ff9a9e, #fecfef)" },
+            
+            { title: "Mi enojonsita", text: "Pero hasta enojada me gustas.", bg: "linear-gradient(to bottom, #cb2d3e, #ef473a)" },
+            { title: "Mi dormilonita", text: "Me encanta cuando descansas.", bg: "linear-gradient(to bottom, #000428, #004e92)" },
+            { title: "Mi copita A", text: "La perfección hecha mujer.", bg: "linear-gradient(to bottom, #ffdde1, #ee9ca7)" },
+
+            { title: "Mi hermosa Ali ✨", text: "Simplemente tú.", bg: "linear-gradient(to bottom, #667eea, #764ba2)" },
+
+            // 3. El Final
+            { title: "Feliz San Valentín", text: "Te quiero muchísimo hermosa.", bg: "linear-gradient(to bottom, #400000, #ff0000)" }
+        ];
+
+        const audio = document.getElementById('bg-music');
+        const intro = document.getElementById('intro-screen');
+        const main = document.getElementById('main-content');
+        const cardContainer = document.getElementById('card-container');
+        const finalMsg = document.getElementById('final-msg');
+        const rainContainer = document.getElementById('rain');
+        
+        let rainInterval;
+        let isFinalPhase = false; 
+        let isTurboMode = false;
+
+        function startExperience() {
+            audio.volume = 0.5; 
+            audio.play().catch(e => console.log("Error audio:", e));
+            intro.style.opacity = '0';
+            setTimeout(() => {
+                intro.style.display = 'none';
+                main.style.opacity = '1';
+                main.style.pointerEvents = 'auto'; 
+                main.style.background = MESSAGES[0].bg;
+                startRain(); 
+            }, 1000);
+            renderCards();
+        }
+
+        function renderCards() {
+            [...MESSAGES].reverse().forEach((msg, index) => {
+                const realIndex = MESSAGES.length - 1 - index;
+                const el = document.createElement('div');
+                el.classList.add('card');
+                el.style.zIndex = index; 
+                el.style.transform = `rotate(${Math.random() * 4 - 2}deg)`;
+                
+                el.innerHTML = `
+                    <h2>${msg.title}</h2>
+                    <p>${msg.text}</p>
+                    <div class="hint">${realIndex === MESSAGES.length - 1 ? '¡Feliz día!' : '(Toca para continuar)'}</div>
+                `;
+
+                el.addEventListener('click', (e) => {
+                    e.stopPropagation(); 
+                    el.classList.add('fly-away');
+                    const nextIndex = realIndex + 1;
+                    if (nextIndex < MESSAGES.length) {
+                        main.style.background = MESSAGES[nextIndex].bg;
+                    } else {
+                        showFinalScene();
+                    }
+                });
+                cardContainer.appendChild(el);
+            });
+        }
+
+        function showFinalScene() {
+            // Fondo final
+            main.style.background = "radial-gradient(circle, #5e0000 0%, #000000 100%)";
+            setTimeout(() => {
+                cardContainer.style.display = 'none';
+            }, 500);
+            setTimeout(() => {
+                finalMsg.style.opacity = '1';
+                finalMsg.style.transform = 'scale(1)';
+                isFinalPhase = true; 
+            }, 800);
+        }
+
+        // --- LÓGICA DE LA LLUVIA ---
+        const emojis = ['❤️', '💖', '🌹', '✨', '🩷', '🐑', '💕', '🦄', '💜'];
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('falling-heart');
+            heart.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+            
+            heart.style.left = Math.random() * 100 + 'vw';
+            
+            if (isTurboMode) {
+                heart.style.animationDuration = Math.random() * 1 + 0.5 + 's'; 
+            } else {
+                heart.style.animationDuration = Math.random() * 2 + 3 + 's'; 
+            }
+
+            heart.style.fontSize = Math.random() * 1.5 + 1 + 'rem';
+            rainContainer.appendChild(heart);
+            
+            setTimeout(() => { heart.remove(); }, 5000);
+        }
+
+        function startRain() {
+            clearInterval(rainInterval);
+            const intervalTime = isTurboMode ? 20 : 300; 
+            rainInterval = setInterval(createHeart, intervalTime);
+        }
+
+        // --- EVENTOS DEL JUEGUITO (Toda la pantalla) ---
+        function activateTurbo(e) {
+            if (isFinalPhase && !isTurboMode) {
+                if(e.type === 'touchstart') e.preventDefault(); 
+                isTurboMode = true;
+                startRain(); 
+            }
+        }
+
+        function deactivateTurbo() {
+            if (isFinalPhase && isTurboMode) {
+                isTurboMode = false;
+                startRain(); 
+            }
+        }
+
+        document.addEventListener('mousedown', activateTurbo);
+        document.addEventListener('mouseup', deactivateTurbo);
+        document.addEventListener('touchstart', activateTurbo, {passive: false});
+        document.addEventListener('touchend', deactivateTurbo);
+
+    </script>
+</body>
+</html>
