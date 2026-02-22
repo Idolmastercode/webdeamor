@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>¡Felices 18, mi Loba!</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="fade-to-black"></div>
+
+    <audio id="bgMusic" src="birthday.mp3" loop></audio>
+
+    <section id="scene-intro" class="scene active">
+        <h1>Tengo una sorpresa para ti...</h1>
+        <button id="startBtn">Toca para descubrirla ✨</button>
+    </section>
+
+    <section id="scene-gift" class="scene hidden">
+        <div id="gift-container">
+            <div id="gift-box">🎁</div> 
+        </div>
+        
+        <div id="photo-container" class="hidden">
+            <img id="girl-photo" src="FOTO_DE_ELLA.jpg" alt="Mi Loba">
+            <img id="party-hat" src="GORRITO.png" alt="Gorrito">
+        </div>
+        
+        <h2 id="bday-text" class="hidden">¡Felices 18 Años! 🥳</h2>
+        <button id="nextToCardsBtn" class="hidden">Tengo 18 cosas que decirte...</button>
+    </section>
+
+    <section id="scene-cards" class="scene hidden">
+        <div id="bouncing-sheep" class="bouncing-animal">🐑</div>
+        <div id="bouncing-unicorn" class="bouncing-animal">🦄</div>
+
+        <h2 style="z-index: 10;">18 Cosas que me gustan de ti</h2>
+        
+        <div class="card-container" id="cardContainer">
+            <div class="card-3d" id="activeCard">
+                <div class="card-front">
+                    <span class="card-number" id="cardNumber">Razón 1 / 18</span>
+                    <p class="hint-text">Toca para descubrir</p>
+                </div>
+                <div class="card-back" id="cardBack">
+                    <p class="card-text" id="cardText">...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="scene-outro" class="scene hidden">
+        <h1 style="color: white; font-size: 2.2rem; margin-bottom: 25px;">Feliz cumpleaños y gracias x tanto ❤️</h1>
+        <p style="color: #e0e0e0; font-size: 1.2rem; line-height: 1.6; margin-bottom: 15px;">Por favor sonríe... aunque no sea a mi lado... quiero que estes feliz como sea...</p>
+        <p style="color: #e0e0e0; font-size: 1.2rem; line-height: 1.6;">Siempre te recordaré sin importar nada...</p>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
